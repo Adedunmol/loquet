@@ -1,6 +1,6 @@
 import * as crypto from "crypto"
 
-export const encryptMessage = (message: string, password: string) => {
+export const encryptMessage = (message: string, password: string | null) => {
 
     if (!password) return { encryptedMessage: message, iv: null }
 
