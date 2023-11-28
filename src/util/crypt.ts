@@ -2,6 +2,8 @@ import * as crypto from "crypto"
 
 export const encryptMessage = (message: string, password: string) => {
 
+    if (!password) return { encryptedMessage: message, iv: null }
+
     const iv = crypto.randomBytes(16)
 
     // const secretKey = password === "" ? crypto.randomBytes(32) : password
