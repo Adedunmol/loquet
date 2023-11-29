@@ -4,11 +4,13 @@ export const encryptMessage = (message: string, password: string | null) => {
 
     if (!password) return { encryptedMessage: message, iv: null }
 
-    const iv = crypto.randomBytes(16)
+    const iv = crypto.randomBytes(32)
 
     // const secretKey = password === "" ? crypto.randomBytes(32) : password
 
-    const cipher = crypto.createCipheriv("aes-256-ccm", password, iv)
+    const key = crypto.createHash('sha256').update(String(password)).digest('base64').slice(0, 16)
+
+    const cipher = crypto.createCipheriv("aes-256-gcm", key, iv)
 
     let encryptedMessage = cipher.update(message, "utf-8", "hex")
 

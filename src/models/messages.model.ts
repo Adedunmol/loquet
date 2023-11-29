@@ -9,4 +9,4 @@ const messagesSchema = new Schema({
     iv: Buffer
 })
 
-export const Message = mongoose.Model<typeof messagesSchema>
+export const Message = mongoose.model("Message", messagesSchema)
