@@ -8,9 +8,7 @@ export const encryptMessage = (message: string, password: string | null) => {
 
     // const secretKey = password === "" ? crypto.randomBytes(32) : password
 
-    const key = crypto.createHash('sha256').update(String(password)).digest('base64').slice(0, 16)
-
-    const cipher = crypto.createCipheriv("aes-256-gcm", key, iv)
+    const cipher = crypto.createCipheriv("aes-256-gcm", password, iv)
 
     let encryptedMessage = cipher.update(message, "utf-8", "hex")
 
@@ -19,9 +17,9 @@ export const encryptMessage = (message: string, password: string | null) => {
     return { encryptedMessage, iv }
 }
 
-export const decryptMessage = (message: string, secretKey: string, iv: string) => {
+export const decryptMessage = (message: string, secretKey: string, iv: Buffer) => {
 
-    const decipher = crypto.createDecipheriv("aes-256-ccm", secretKey, Buffer.from(iv))
+    const decipher = crypto.createDecipheriv("aes-256-gcm", secretKey, iv)
 
     let decryptedMessage = decipher.update(message, "hex", "utf-8")
 

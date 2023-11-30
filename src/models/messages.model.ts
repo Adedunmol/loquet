@@ -5,7 +5,6 @@ const messagesSchema = new Schema({
         type: String,
         required: true
     },
-    password: String,
     iv: Buffer
 })
 

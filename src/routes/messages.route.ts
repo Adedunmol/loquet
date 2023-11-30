@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { createNewMessage } from "../controllers/messages.controller";
+import { encryptNewMessage } from "../controllers/messages.controller";
 
 const router = Router();
 
-router.post("/", createNewMessage)
+router.post("/encrypt", encryptNewMessage)
 
 export default router;
