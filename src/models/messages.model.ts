@@ -5,7 +5,8 @@ const messagesSchema = new Schema({
         type: String,
         required: true
     },
-    iv: Buffer
+    iv: String,
+    tag: String
 })
 
 export const Message = mongoose.model("Message", messagesSchema)
