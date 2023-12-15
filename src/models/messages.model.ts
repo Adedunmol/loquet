@@ -5,8 +5,11 @@ const messagesSchema = new Schema({
         type: String,
         required: true
     },
-    iv: String,
-    tag: String
+    iv: {
+        type: String,
+        required: true
+    },
+    password: String
 })
 
 export const Message = mongoose.model("Message", messagesSchema)

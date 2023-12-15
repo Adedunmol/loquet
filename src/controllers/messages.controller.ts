@@ -14,12 +14,10 @@ export const encryptNewMessage = async (req: Request, res: Response) => {
         hashedPassword = await bcrypt.hash(password, 10)
     }
 
-    const key = hashedPassword.substring(0, 32) // the algorithm uses 32 bytes for encryption
-    const { encryptedMessage, iv, tag } = encryptMessage(message, key)
+    const key = hashedPassword // the algorithm uses 32 bytes for encryption
+    const { encryptedMessage, newIV } = encryptMessage(message, key)
 
-    console.log(iv)
-
-    const data = await Message.create({ message: encryptedMessage, iv: iv, tag })
+    const data = await Message.create({ message: encryptedMessage, iv: newIV, password: hashedPassword })
 
     return res.status(201).json({ status: "success", data, message: null })
 }
@@ -40,11 +38,11 @@ export const decryptNewMessage = async (req: Request, res: Response) => {
 
     if (!message.iv) return res.status(200).json({ status: "success", data: message, message: null })
 
-    console.log(message)
+    const passwordsMatch = await bcrypt.compare(password, message.password!)
 
-    const hashedPassword = await bcrypt.hash(password, 10)
-    const key = hashedPassword.substring(0, 32)
-    const decryptedMessage = decryptMessage(message.message, key, message.iv, message.tag!)
+    if (!passwordsMatch) return res.status(200).json({ status: "success", data: null, message: "invalid password" })
+    
+    const decryptedMessage = decryptMessage(message.message, message.password!, message.iv)
 
     return res.status(200).json({ status: "success", data: decryptedMessage, message: null })
 }
